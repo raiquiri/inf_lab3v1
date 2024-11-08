@@ -1,0 +1,20 @@
+name: Run tests
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Test time
+        run: pytest --html=report.html --self-contained-html
+      - name: Upload test report
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+            name: test-report
+            path: report.html
